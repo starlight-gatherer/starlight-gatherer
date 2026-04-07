@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Archive {
+  id            String   @id
+  title         String
+  year          Int
+  videoUrl      String?
+  bv            String?
+  isTranslated  Int      @default(-1)
+  fullVersionId String?
+  fullVersion   Archive? @relation("PartToFull", fields: [fullVersionId], references: [id])
+  parts         Archive[] @relation("PartToFull")
+  seriesId      Int?
+  series        Series?  @relation(fields: [seriesId], references: [id])
+  seriesVol     Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Series {
+  id       Int       @id @default(autoincrement())
+  title    String    @unique
+  archives Archive[]
+}
