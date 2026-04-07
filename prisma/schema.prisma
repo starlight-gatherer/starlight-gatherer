@@ -18,15 +18,38 @@ model Archive {
   fullVersionId String?
   fullVersion   Archive? @relation("PartToFull", fields: [fullVersionId], references: [id])
   parts         Archive[] @relation("PartToFull")
-  seriesId      Int?
-  series        Series?  @relation(fields: [seriesId], references: [id])
+
+  eventId       Int?
+  event         Event?   @relation(fields: [eventId], references: [id])
+
   seriesVol     Int?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
 
-model Series {
+model Event {
+  id        Int       @id @default(autoincrement())
+  title     String
+  typeId    Int?
+  type      SeriesType? @relation(fields: [typeId], references: [id])
+  date      DateTime?
+  isVirtual Boolean
+  seriesId  Int?
+  series    Series?   @relation(fields: [seriesId], references: [id])
+  archives  Archive[]
+}
+
+model SeriesType {
   id       Int       @id @default(autoincrement())
-  title    String    @unique
-  archives Archive[]
+  name     String    @unique
+  series   Series[]
+  events   Event[]
+}
+
+model Series {
+  id           Int         @id @default(autoincrement())
+  title        String      @unique
+  seriesTypeId Int?
+  seriesType   SeriesType? @relation(fields: [seriesTypeId], references: [id])
+  events       Event[]
 }
