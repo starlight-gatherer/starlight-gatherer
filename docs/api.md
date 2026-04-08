@@ -64,7 +64,7 @@ SeriesType ──< Series ──< Event ──< Archive >── Archive (PartToF
 | id | int | 自增主键 |
 | name | string | 类型名称（唯一） |
 
-现有类型：`musical`, `live`, `nama_housou`, `mixed_live`, `fest`, `reading_theatre`, `radio`, `talking`, `sports`
+现有类型：`musical`, `live`, `nama_housou`, `mixed_live`, `fest`, `reading_theatre`, `radio`, `talking`, `other`
 
 ---
 

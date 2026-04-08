@@ -1,31 +1,55 @@
+import fs from 'fs';
+import path from 'path';
+import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
+import { FriendCard } from '@/components/friend-card';
+
+interface FriendLink {
+  avatar: string;
+  name: string;
+  introduction: string;
+  url: string;
+}
+
 export default function AboutPage() {
+  const filePath = path.join(process.cwd(), 'content/about.md');
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+
+  const friendsPath = path.join(process.cwd(), 'content/friends.json');
+  const friends: FriendLink[] = JSON.parse(fs.readFileSync(friendsPath, 'utf8'));
+
   return (
-    <main className="max-w-7xl mx-auto px-6 py-20">
-      <h1 className="text-4xl font-black tracking-tight mb-12 text-slate-800">
-        关于<span className="text-red-500">.</span>
-      </h1>
+    <main className="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+      <div className="flex-1 min-w-0 max-w-3xl">
+        <article className="prose prose-blue lg:prose-xl mx-auto">
+          <ReactMarkdown>{fileContent}</ReactMarkdown>
+        </article>
 
-      <section className="mb-16">
-        <h2 className="text-2xl font-black mb-6 text-slate-700">站点介绍</h2>
-        <div className="prose prose-slate max-w-2xl">
-          <p className="text-slate-600 leading-relaxed">
-            Starlight Gatherer 是一个《少女☆歌剧 Revue Starlight》的资源归档站，
-            旨在按现实时间线整理和归档舞台剧、Live、生放送等视频资源。
-          </p>
-          <p className="text-slate-600 leading-relaxed mt-4">
-            本站数据来源于粉丝社区的共同努力，感谢所有搬运和字幕制作人员的辛勤付出。
-          </p>
-        </div>
-      </section>
+        <br/><br/>
 
-      <section>
-        <h2 className="text-2xl font-black mb-6 text-slate-700">友情链接</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="p-5 bg-white rounded-2xl border border-slate-100 text-slate-400 italic">
-            暂无友链，欢迎联系添加
+        <section>
+          <h1 className="text-2xl font-bold text-slate-800 mb-4">友情链接</h1>
+          <br/>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {friends.map((friend) => (
+              <FriendCard key={friend.url} {...friend} />
+            ))}
           </div>
+        </section>
+      </div>
+
+      <aside className="hidden lg:block w-80 xl:w-96 shrink-0">
+        <div className="sticky top-24">
+          <Image
+            src="/images/starlight_cover.png"
+            alt="Starlight Cover"
+            width={600}
+            height={800}
+            className="w-full rounded-2xl"
+            priority
+          />
         </div>
-      </section>
+      </aside>
     </main>
   );
 }
