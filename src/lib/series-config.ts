@@ -13,10 +13,15 @@
 // value: 图片路径 (相对于 public 目录)
 export const SERIES_COVERS: Record<number, string | null> = {
   // 示例配置（取消注释并替换为实际文件名）:
-  // 1: "/images/series/1.png",
+  1: "/images/series/1.png",
   2: "/images/series/cover_stage.jpg",
-  // 3: "/images/series/3.webp",
+  5: "/images/series/5.jpg",
+  6: "/images/series/6.jpg",
+  11: "/images/series/11.jpg",
+  12: "/images/series/12.jpg",
 };
+
+const DEFAULT_COVER = "/images/series/default.png"
 
 // 系列主题色配置
 export const SERIES_ACCENT: Record<string, "red" | "yellow" | "blue"> = {
@@ -40,7 +45,7 @@ export const SERIES_ACCENT: Record<string, "red" | "yellow" | "blue"> = {
  * @returns 封面图路径，如果未配置则返回 null
  */
 export function getSeriesCover(seriesId: number): string | null {
-  return SERIES_COVERS[seriesId] ?? null;
+  return SERIES_COVERS[seriesId] ?? DEFAULT_COVER;
 }
 
 /**

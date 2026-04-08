@@ -4,14 +4,11 @@ import { prisma } from "@/lib/db";
 export async function GET() {
   const series = await prisma.series.findMany({
     include: {
-      _count: { select: { archives: true } },
-      archives: {
-        orderBy: { seriesVol: "asc" },
-        take: 1,
-        select: { videoUrl: true, bv: true },
-      },
+      seriesType: true,
+      _count: { select: { events: true } },
     },
     orderBy: { title: "asc" },
   });
+
   return NextResponse.json(series);
 }

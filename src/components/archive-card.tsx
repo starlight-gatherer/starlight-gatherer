@@ -18,6 +18,25 @@ interface ArchiveCardProps {
 export function ArchiveCard({
   id, title, bv, isTranslated, year, videoUrl, isClip, seriesTitle, seriesVol,
 }: ArchiveCardProps) {
+  const tags = [];
+
+  const transVariant = translationToVariant(isTranslated);
+  if (transVariant !== "unknown") {
+    tags.push(<TagBadge key="trans" variant={transVariant} />);
+  }
+  if (isClip) {
+    tags.push(<TagBadge key="clip" variant="clip" />);
+  }
+  if (seriesTitle) {
+    tags.push(
+      <TagBadge 
+        key="series"
+        variant="series" 
+        label={`${seriesTitle}${seriesVol ? ` #${seriesVol}` : ""}`} 
+      />
+    );
+  }
+
   return (
     <article
       onClick={() => handleVideoAction({ id, videoUrl, title })}
@@ -28,13 +47,15 @@ export function ArchiveCard({
       <div className="absolute top-4 right-4 text-3xl font-black text-slate-100 leading-none select-none">
         {year}
       </div>
-      <div className="flex flex-wrap gap-1.5 mb-3">
-        <TagBadge variant={translationToVariant(isTranslated)} />
-        {isClip && <TagBadge variant="clip" />}
-        {seriesTitle && (
-          <TagBadge variant="series" label={`${seriesTitle}${seriesVol ? ` #${seriesVol}` : ""}`} />
-        )}
-      </div>
+      {tags.length > 0 ? (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {tags}
+        </div>
+      ) : (
+          <div className="flex flex-wrap gap-1.5 mb-3" style={{visibility: "hidden"}}>
+            <TagBadge variant="series" label="123"/>
+          </div>    // 占位
+      )}
       <h3 className="font-bold text-sm text-slate-800 leading-snug line-clamp-3 group-hover:text-red-600 transition-colors">
         {title}
       </h3>

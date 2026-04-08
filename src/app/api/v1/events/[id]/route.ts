@@ -7,16 +7,17 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const archive = await prisma.archive.findUnique({
-    where: { id },
+  const event = await prisma.event.findUnique({
+    where: { id: parseInt(id) },
     include: {
-      event: { include: { series: true } },
-      fullVersion: { select: { id: true, title: true } },
-      parts: { select: { id: true, title: true } },
+      _count: { select: { archives: true } },
+      type: { select: { id: true, name: true } },
+      series: { select: { id: true, title: true } },
+      archives: { select: { id: true, title: true } },
     },
   });
-  if (!archive) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json(archive);
+  if (!event) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json(event);
 }
 
 export async function PATCH(
@@ -28,9 +29,23 @@ export async function PATCH(
   }
   const { id } = await params;
   const body = await req.json();
+
+  // If date is provided, convert string to Date
+  const data: Record<string, unknown> = { ...body };
+  if (data.date && typeof data.date === "string") {
+    data.date = new Date(data.date);
+  }
+
   try {
-    const archive = await prisma.archive.update({ where: { id }, data: body });
-    return NextResponse.json(archive);
+    const event = await prisma.event.update({
+      where: { id: parseInt(id) },
+      data,
+      include: {
+        type: { select: { id: true, name: true } },
+        series: { select: { id: true, title: true } },
+      },
+    });
+    return NextResponse.json(event);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json({ error: msg }, { status: 404 });
@@ -46,7 +61,7 @@ export async function DELETE(
   }
   const { id } = await params;
   try {
-    await prisma.archive.delete({ where: { id } });
+    await prisma.event.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";

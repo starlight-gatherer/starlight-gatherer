@@ -6,7 +6,7 @@ export function Footer() {
           <a href="/admin" className="hover:text-red-400 transition-colors">Admin</a>
           <a href="/api/v1/series" className="hover:text-red-400 transition-colors">API</a>
         </div>
-        <p className="opacity-30 text-xs">Position Zero. Are you ready?</p>
+        <p className="opacity-30 text-xs">Position Zero.</p>
       </div>
     </footer>
   );

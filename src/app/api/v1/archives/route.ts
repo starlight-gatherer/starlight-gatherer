@@ -4,19 +4,19 @@ import { validateApiKey } from "@/lib/api-auth";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const seriesId = searchParams.get("seriesId");
   const year = searchParams.get("year");
   const isTranslated = searchParams.get("isTranslated");
+  const eventId = searchParams.get("eventId");
 
   const where: Record<string, unknown> = {};
-  if (seriesId) where.seriesId = parseInt(seriesId);
   if (year) where.year = parseInt(year);
   if (isTranslated) where.isTranslated = parseInt(isTranslated);
+  if (eventId) where.eventId = parseInt(eventId);
 
   const archives = await prisma.archive.findMany({
     where: Object.keys(where).length > 0 ? where : undefined,
     include: {
-      series: true,
+      event: { include: { series: true } },
       fullVersion: { select: { id: true, title: true } },
       parts: { select: { id: true, title: true } },
     },
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { id, title, year, videoUrl, bv, isTranslated, fullVersionId, seriesId, seriesVol } = body;
+  const { id, title, year, videoUrl, bv, isTranslated, fullVersionId, eventId, seriesVol } = body;
 
   if (!id || !title || !year) {
     return NextResponse.json({ error: "id, title, year are required" }, { status: 400 });
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const archive = await prisma.archive.create({
-      data: { id, title, year, videoUrl, bv, isTranslated, fullVersionId, seriesId, seriesVol },
+      data: { id, title, year, videoUrl, bv, isTranslated, fullVersionId, eventId, seriesVol },
     });
     return NextResponse.json(archive, { status: 201 });
   } catch (e: unknown) {

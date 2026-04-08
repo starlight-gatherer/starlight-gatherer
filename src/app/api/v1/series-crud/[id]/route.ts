@@ -7,16 +7,19 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const archive = await prisma.archive.findUnique({
-    where: { id },
+  const series = await prisma.series.findUnique({
+    where: { id: parseInt(id) },
     include: {
-      event: { include: { series: true } },
-      fullVersion: { select: { id: true, title: true } },
-      parts: { select: { id: true, title: true } },
+      _count: { select: { events: true } },
+      seriesType: { select: { id: true, name: true } },
+      events: {
+        select: { id: true, title: true, date: true },
+        orderBy: { date: "asc" },
+      },
     },
   });
-  if (!archive) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json(archive);
+  if (!series) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  return NextResponse.json(series);
 }
 
 export async function PATCH(
@@ -28,9 +31,16 @@ export async function PATCH(
   }
   const { id } = await params;
   const body = await req.json();
+
   try {
-    const archive = await prisma.archive.update({ where: { id }, data: body });
-    return NextResponse.json(archive);
+    const series = await prisma.series.update({
+      where: { id: parseInt(id) },
+      data: body,
+      include: {
+        seriesType: { select: { id: true, name: true } },
+      },
+    });
+    return NextResponse.json(series);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json({ error: msg }, { status: 404 });
@@ -46,7 +56,7 @@ export async function DELETE(
   }
   const { id } = await params;
   try {
-    await prisma.archive.delete({ where: { id } });
+    await prisma.series.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";
