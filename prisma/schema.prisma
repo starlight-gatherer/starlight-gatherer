@@ -9,13 +9,13 @@ datasource db {
 }
 
 model Archive {
-  id            String   @id
+  id            Int      @id @default(autoincrement())
   title         String
   year          Int
   videoUrl      String?
   bv            String?
   isTranslated  Int      @default(-1)
-  fullVersionId String?
+  fullVersionId Int?
   fullVersion   Archive? @relation("PartToFull", fields: [fullVersionId], references: [id])
   parts         Archive[] @relation("PartToFull")
 

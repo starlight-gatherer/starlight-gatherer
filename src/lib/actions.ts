@@ -1,5 +1,5 @@
 interface ArchiveItem {
-  id: string;
+  id: number;
   videoUrl: string | null;
   title: string;
 }

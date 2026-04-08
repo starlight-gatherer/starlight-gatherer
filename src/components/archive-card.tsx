@@ -4,7 +4,7 @@ import { TagBadge, translationToVariant } from "./tag-badge";
 import { handleVideoAction } from "@/lib/actions";
 
 interface ArchiveCardProps {
-  id: string;
+  id: number;
   title: string;
   bv: string | null;
   isTranslated: number;

@@ -32,15 +32,15 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { id, title, year, videoUrl, bv, isTranslated, fullVersionId, eventId, seriesVol } = body;
+  const { title, year, videoUrl, bv, isTranslated, fullVersionId, eventId, seriesVol } = body;
 
-  if (!id || !title || !year) {
-    return NextResponse.json({ error: "id, title, year are required" }, { status: 400 });
+  if (!title || !year) {
+    return NextResponse.json({ error: "title, year are required" }, { status: 400 });
   }
 
   try {
     const archive = await prisma.archive.create({
-      data: { id, title, year, videoUrl, bv, isTranslated, fullVersionId, eventId, seriesVol },
+      data: { title, year, videoUrl, bv, isTranslated, fullVersionId, eventId, seriesVol },
     });
     return NextResponse.json(archive, { status: 201 });
   } catch (e: unknown) {

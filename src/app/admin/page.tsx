@@ -8,7 +8,7 @@ import { LockOutlined } from "@ant-design/icons";
 // ── Types ──────────────────────────────────────────────────────────────
 
 interface Archive {
-  id: string;
+  id: number;
   title: string;
   year: number;
   videoUrl: string | null;
@@ -16,8 +16,8 @@ interface Archive {
   isTranslated: number;
   series: { id: number; title: string } | null;
   seriesVol: number | null;
-  fullVersionId: string | null;
-  parts: { id: string; title: string }[];
+  fullVersionId: number | null;
+  parts: { id: number; title: string }[];
 }
 
 interface EventRow {

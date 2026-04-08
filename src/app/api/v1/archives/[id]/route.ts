@@ -8,7 +8,7 @@ export async function GET(
 ) {
   const { id } = await params;
   const archive = await prisma.archive.findUnique({
-    where: { id },
+    where: { id: parseInt(id) },
     include: {
       event: { include: { series: true } },
       fullVersion: { select: { id: true, title: true } },
@@ -29,7 +29,7 @@ export async function PATCH(
   const { id } = await params;
   const body = await req.json();
   try {
-    const archive = await prisma.archive.update({ where: { id }, data: body });
+    const archive = await prisma.archive.update({ where: { id: parseInt(id) }, data: body });
     return NextResponse.json(archive);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";
@@ -46,7 +46,7 @@ export async function DELETE(
   }
   const { id } = await params;
   try {
-    await prisma.archive.delete({ where: { id } });
+    await prisma.archive.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";
