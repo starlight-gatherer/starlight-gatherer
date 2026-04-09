@@ -172,7 +172,7 @@ function TabBar({
 
 function ArchivesTab() {
   const [archives, setArchives] = useState<Archive[]>([]);
-  const [editing, setEditing] = useState<string | null>(null);
+  const [editing, setEditing] = useState<number | null>(null);
   const [editData, setEditData] = useState<Partial<Archive>>({});
   const [filter, setFilter] = useState("");
   const [saving, setSaving] = useState(false);
