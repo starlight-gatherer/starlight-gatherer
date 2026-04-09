@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { Hero } from "@/components/hero";
 import { SeriesCard } from "@/components/series-card";
 import { getSeriesCover } from "@/lib/series-config";
+import { unstable_noStore as noStore } from 'next/cache';
 
 const TYPE_LABELS: Record<string, string> = {
   musical: "舞台剧",
@@ -16,6 +17,8 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export default async function HomePage() {
+  noStore();           // 禁止缓存数据，实时更新
+
   const seriesTypes = await prisma.seriesType.findMany({
     include: {
       series: {
