@@ -49,6 +49,7 @@ model SeriesType {
 model Series {
   id           Int         @id @default(autoincrement())
   title        String      @unique
+  coverURL     String?
   seriesTypeId Int?
   seriesType   SeriesType? @relation(fields: [seriesTypeId], references: [id])
   events       Event[]

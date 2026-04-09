@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 import { validateApiKey } from "@/lib/api-auth";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
@@ -41,9 +42,15 @@ export async function POST(req: NextRequest) {
     const filePath = path.join(dir, `${seriesId}${ext}`);
     await writeFile(filePath, buffer);
 
+    const fullPath = `/images/series/${seriesId}${ext}`;
+    await prisma.series.update({
+      where: { id: parseInt(seriesId) },
+      data: { coverURL: fullPath }
+    });
+
     return NextResponse.json({
       success: true,
-      path: `/images/series/${seriesId}${ext}`,
+      path: fullPath,
     });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";

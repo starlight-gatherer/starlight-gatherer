@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { title, seriesTypeId } = body;
+  const { title, seriesTypeId, coverURL } = body;
 
   if (!title) {
     return NextResponse.json({ error: "title is required" }, { status: 400 });
@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
       data: {
         title,
         seriesTypeId: seriesTypeId ?? null,
+        coverURL: coverURL ?? null
       },
       include: {
         seriesType: { select: { id: true, name: true } },

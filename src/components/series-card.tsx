@@ -5,31 +5,21 @@ interface SeriesCardProps {
   seriesId: number;
   title: string;
   count: number;
-  coverImage?: string | null;  // 本地图片路径，如 "/images/series/1.png"
-  accentColor?: "red" | "yellow" | "blue";
+  coverImage: string;
 }
 
-const accentMap = {
-  red:    "from-red-500 to-rose-600",
-  yellow: "from-amber-500 to-yellow-600",
-  blue:   "from-blue-500 to-indigo-600",
-};
-
-export function SeriesCard({ seriesId, title, count, coverImage, accentColor = "red" }: SeriesCardProps) {
+export function SeriesCard({ seriesId, title, count, coverImage }: SeriesCardProps) {
   return (
     <Link href={`/series/${seriesId}`} className="group block">
       <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900">
-        {coverImage ? (
-          <Image
+        {<Image
             src={coverImage}
             alt={title}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-        ) : (
-          <div className={`absolute inset-0 bg-gradient-to-br ${accentMap[accentColor]} opacity-80`} />
-        )}
+        }
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <h3 className="text-xl font-black text-white leading-tight mb-1 group-hover:underline decoration-2 underline-offset-4">

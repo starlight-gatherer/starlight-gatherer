@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import { Hero } from "@/components/hero";
 import { SeriesCard } from "@/components/series-card";
-import { getSeriesCover, getSeriesAccent } from "@/lib/series-config";
+import { getSeriesCover } from "@/lib/series-config";
 
 const TYPE_LABELS: Record<string, string> = {
   musical: "舞台剧",
@@ -41,16 +41,18 @@ export default async function HomePage() {
                 <span className="text-red-500">.</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {type.series.map((s) => (
-                  <SeriesCard
-                    key={s.id}
-                    seriesId={s.id}
-                    title={s.title}
-                    count={s._count.events}
-                    coverImage={getSeriesCover(s.id)}
-                    accentColor={getSeriesAccent(s.title)}
-                  />
-                ))}
+                {Promise.all(
+                  type.series.map(async (s) => (
+                    <SeriesCard
+                      key={s.id}
+                      seriesId={s.id}
+                      title={s.title}
+                      count={s._count.events}
+                      coverImage={await getSeriesCover(s.id)}
+                    />
+                  )
+                  ))
+                }
               </div>
             </section>
           );
