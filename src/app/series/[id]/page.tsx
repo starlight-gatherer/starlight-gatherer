@@ -2,8 +2,11 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArchiveCard } from "@/components/archive-card";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function SeriesPage({ params }: { params: Promise<{ id: string }> }) {
+  noStore();
+
   const { id } = await params;
   const seriesId = parseInt(id);
 

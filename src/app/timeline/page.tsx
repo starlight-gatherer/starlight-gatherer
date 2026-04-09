@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/db";
 import { ArchiveCard } from "@/components/archive-card";
 import { MasonryGrid } from "@/components/masonry-grid";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function TimelinePage() {
+  noStore();
+
   const archives = await prisma.archive.findMany({
     where: { event: { isVirtual: false } },
     include: {
