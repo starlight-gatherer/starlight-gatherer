@@ -2,4 +2,6 @@ Starlight Gatherer 是多媒体企划《少女☆歌剧 Revue Starlight》的资
 
 源数据来自[迷舟的整理](https://my.feishu.cn/wiki/DInZwFL5JiRu8MkoSnqckFVwnue)，网站由[道山神连](https://space.bilibili.com/13024288)开发维护。
 
+感谢所有汉化、搬运老师们的辛勤付出，以及所有支持少歌企划的长颈鹿们！
+
 ---

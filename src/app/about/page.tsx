@@ -19,7 +19,7 @@ export default function AboutPage() {
   const friends: FriendLink[] = JSON.parse(fs.readFileSync(friendsPath, 'utf8'));
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+    <main className="max-w-7xl mx-auto px-6 py-8 flex items-stretch gap-8">
       <div className="flex-1 min-w-0 max-w-3xl">
         <article className="prose prose-blue lg:prose-xl mx-auto">
           <ReactMarkdown>{fileContent}</ReactMarkdown>
@@ -38,14 +38,13 @@ export default function AboutPage() {
         </section>
       </div>
 
-      <aside className="hidden lg:block w-80 xl:w-96 shrink-0">
-        <div className="sticky top-24">
+      <aside className="hidden lg:block w-[calc(20%)] xl:w-[calc(38%)] shrink-0 ml-[2%]">
+        <div className="sticky h-[calc(100%)]">
           <Image
             src="/images/starlight_cover.png"
             alt="Starlight Cover"
-            width={600}
-            height={800}
-            className="w-full rounded-2xl"
+            fill={true}
+            className="h-full object-cover rounded-2xl"
             priority
           />
         </div>

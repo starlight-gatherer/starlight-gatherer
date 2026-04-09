@@ -18,7 +18,7 @@ export const SERIES_COVERS: Record<number, string | null> = {
   5: "/images/series/5.jpg",
   6: "/images/series/6.jpg",
   11: "/images/series/11.jpg",
-  12: "/images/series/12.jpg",
+  12: "/images/series/12.png",
 };
 
 const DEFAULT_COVER = "/images/series/default.png"

@@ -19,7 +19,7 @@ export function FriendCard({ avatar, name, introduction, url }: FriendCardProps)
                  hover:border-red-300 hover:shadow-lg hover:shadow-red-50
                  transition-all duration-300"
     >
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-3">
         <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0">
           <Image
             src={avatar}

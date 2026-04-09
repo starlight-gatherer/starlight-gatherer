@@ -1,20 +1,38 @@
 [
     {
-        "avatar": "/starlight.svg",
+        "avatar": "/avatars/revuestarlight-official.png",
         "name": "少女☆歌劇 レヴュースタァライト",
         "introduction": "少女歌剧企划官网",
         "url": "https://revuestarlight.com/"
     },
     {
-        "avatar": "/starlight.svg",
-        "name": "圣翔毕业论文审查组",
-        "introduction": "剧场版少女歌剧B班毕业论文合集中文翻译站",
-        "url": "https://topstardy.top"
+        "avatar": "/avatars/revuestarlight-official-bilibili.webp",
+        "name": "少女歌剧_official",
+        "introduction": "少女歌剧B站官号",
+        "url": "https://space.bilibili.com/3546683168263123"
+    },
+    {
+        "avatar": "/avatars/karth.ico",
+        "name": "Project Karthuria",
+        "introduction": "手游スタリラ资源站",
+        "url": "https://karth.top"
     },
     {
         "avatar": "/avatars/housouka.webp",
         "name": "圣翔音乐学院放送科",
         "introduction": "少歌舞台剧、Live等官方资源汉化组",
         "url": "https://space.bilibili.com/1815671630"
+    },
+    {
+        "avatar": "/avatars/gekifes-weibo.jpg",
+        "name": "剧Fes委员会脑洞科",
+        "introduction": "少歌综合微博主页",
+        "url": "https://www.weibo.com/n/%E5%89%A7Fes%E5%A7%94%E5%91%98%E4%BC%9A%E8%84%91%E6%B4%9E%E7%A7%91"
+    },
+    {
+        "avatar": "/starlight.svg",
+        "name": "圣翔毕业论文审查组",
+        "introduction": "剧场版少女歌剧B班毕业论文合集中文翻译站",
+        "url": "https://www.topstardy.top"
     }
 ]
