@@ -12,6 +12,5 @@ export async function getSeriesCover(seriesId: number): Promise<string> {
     where: { id: seriesId },
     select: { coverURL: true }
   });
-  console.log(`get ${seriesId} cover: ${series?.coverURL}`);
   return series?.coverURL ?? DEFAULT_COVER;
 }
