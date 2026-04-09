@@ -14,8 +14,10 @@ interface Archive {
   videoUrl: string | null;
   bv: string | null;
   isTranslated: number;
-  series: { id: number; title: string } | null;
-  seriesVol: number | null;
+
+  eventId: number | null;
+  event: EventRow;
+
   fullVersionId: number | null;
   parts: { id: number; title: string }[];
 }
@@ -195,6 +197,7 @@ function ArchivesTab() {
       videoUrl: a.videoUrl,
       bv: a.bv,
       isTranslated: a.isTranslated,
+      eventId: a.eventId
     });
   };
 
@@ -213,6 +216,7 @@ function ArchivesTab() {
           videoUrl: editData.videoUrl,
           bv: editData.bv,
           isTranslated: editData.isTranslated,
+          eventId: editData.eventId
         }),
       });
       if (!res.ok) {
@@ -232,9 +236,9 @@ function ArchivesTab() {
 
   const displayed = archives.filter(
     (a) =>
-      a.title.toLowerCase().includes(filter.toLowerCase()) ||
-      a.bv?.toLowerCase().includes(filter.toLowerCase()) ||
-      a.series?.title.toLowerCase().includes(filter.toLowerCase())
+      a.title?.toLowerCase().includes(filter.toLowerCase()) ||
+      a.bv?.toLowerCase()?.includes(filter.toLowerCase()) || 
+      a.event?.title?.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
@@ -257,7 +261,8 @@ function ArchivesTab() {
               <th className="px-4 py-3">标题</th>
               <th className="px-4 py-3">BV</th>
               <th className="px-4 py-3">状态</th>
-              <th className="px-4 py-3">系列</th>
+              <th className="px-4 py-3">活动ID</th>
+              <th className="px-4 py-3">活动</th>
               <th className="px-4 py-3">年份</th>
               <th className="px-4 py-3 w-28"></th>
             </tr>
@@ -312,7 +317,17 @@ function ArchivesTab() {
                       </select>
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">
-                      {a.series?.title ?? "-"}
+                      <input
+                        type="text"
+                        value={editData.eventId ?? ""}
+                        onChange={(e) =>
+                          setEditData({ ...editData, eventId: parseInt(e.target.value) })
+                        }
+                        className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-red-500/30"
+                      />
+                    </td>
+                    <td className="px-4 py-3 max-w-xs truncate font-medium">
+                      {a.event?.title ?? "-"}
                     </td>
                     <td className="px-4 py-3 text-slate-400">{a.year}</td>
                     <td className="px-4 py-3">
@@ -358,7 +373,10 @@ function ArchivesTab() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">
-                      {a.series?.title ?? "-"}
+                      {a.eventId ?? "-"}
+                    </td>
+                    <td className="px-4 py-3 max-w-xs truncate font-medium">
+                      {a.event?.title ?? "-"}
                     </td>
                     <td className="px-4 py-3 text-slate-400">{a.year}</td>
                     <td className="px-4 py-3">
@@ -528,10 +546,16 @@ function EventsTab() {
   };
 
   const displayed = events.filter(
-    (ev) =>
-      ev.title.toLowerCase().includes(filter.toLowerCase()) ||
-      ev.series?.title.toLowerCase().includes(filter.toLowerCase()) ||
-      ev.type?.name.toLowerCase().includes(filter.toLowerCase())
+    (ev) => {
+      if (filter[0] === '#') {
+        return ev.id === parseInt(filter.substring(1));
+      }
+      else {
+        return ev.title.toLowerCase().includes(filter.toLowerCase()) ||
+          ev.series?.title.toLowerCase().includes(filter.toLowerCase()) ||
+          ev.type?.name.toLowerCase().includes(filter.toLowerCase());
+      }
+    }
   );
 
   return (

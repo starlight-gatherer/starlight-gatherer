@@ -21,11 +21,27 @@ export default async function HomePage() {
       series: {
         include: {
           _count: { select: { events: true } },
+          // 取出该 series 下时间最早的一个 event
+          events: {
+            orderBy: { date: "asc" },
+            take: 1,
+            select: { date: true },
+          },
         },
-        orderBy: { id: "asc" },
       },
     },
     orderBy: { id: "asc" },
+  });
+
+  // 内存排序：根据第一个 event 的 date 进行升序排列
+  seriesTypes.forEach((type) => {
+    type.series.sort((a, b) => {
+      // 获取时间戳。如果没有 event 或 date 为 null，将其设为 Infinity (排到最后面)
+      const dateA = a.events[0]?.date?.getTime() ?? Infinity;
+      const dateB = b.events[0]?.date?.getTime() ?? Infinity;
+
+      return dateA - dateB;
+    });
   });
 
   return (
