@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { validateApiKey } from "@/lib/api-auth";
+import { validateApiKey, PERM_CREATE } from "@/lib/api-auth";
 
 export async function GET(_req: NextRequest) {
   const seriesList = await prisma.series.findMany({
@@ -14,7 +14,7 @@ export async function GET(_req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!validateApiKey(req)) {
+  if (!(await validateApiKey(req, PERM_CREATE))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -10,6 +10,7 @@ import { ArchivesTab } from "./_tabs/ArchivesTab";
 import { EventsTab } from "./_tabs/EventsTab";
 import { SeriesTab } from "./_tabs/SeriesTab";
 import { CoverTab } from "./_tabs/CoverTab";
+import { KeysTab } from "./_tabs/KeysTab";
 import type { TabKey } from "./_types";
 
 // ── Auth Gate ──────────────────────────────────────────────────────────
@@ -86,6 +87,7 @@ export default function AdminPage() {
           {activeTab === "events" && <EventsTab />}
           {activeTab === "series" && <SeriesTab />}
           {activeTab === "cover" && <CoverTab />}
+          {activeTab === "keys" && <KeysTab />}
         </main>
       </App>
     </ConfigProvider>

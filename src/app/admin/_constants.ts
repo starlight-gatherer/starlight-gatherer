@@ -21,4 +21,16 @@ export const TABS: { key: import("./_types").TabKey; label: string }[] = [
   { key: "events", label: "Events" },
   { key: "series", label: "Series" },
   { key: "cover", label: "Series Cover" },
+  { key: "keys", label: "API Keys" },
+];
+
+// ── Permission labels ──────────────────────────────────────────────────
+
+export const PERM_LABELS: { bit: number; label: string }[] = [
+  { bit: 1, label: "Read" },
+  { bit: 2, label: "Create" },
+  { bit: 4, label: "Update" },
+  { bit: 8, label: "Delete" },
+  { bit: 16, label: "Upload" },
+  { bit: 32, label: "Manage Keys" },
 ];

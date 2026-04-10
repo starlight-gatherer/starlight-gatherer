@@ -54,3 +54,13 @@ model Series {
   seriesType   SeriesType? @relation(fields: [seriesTypeId], references: [id])
   events       Event[]
 }
+
+model ApiKey {
+  id          Int       @id @default(autoincrement())
+  key         String    @unique
+  prefix      String
+  name        String
+  permissions Int
+  lastUsedAt  DateTime?
+  createdAt   DateTime  @default(now())
+}

@@ -1,36 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { validateApiKey, PERM_UPDATE, PERM_DELETE } from "@/lib/api-auth";
-
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id } = await params;
-  const archive = await prisma.archive.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      event: { include: { series: true } },
-      fullVersion: { select: { id: true, title: true } },
-      parts: { select: { id: true, title: true } },
-    },
-  });
-  if (!archive) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json(archive);
-}
+import { validateApiKey, PERM_MANAGE_KEYS } from "@/lib/api-auth";
 
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!(await validateApiKey(req, PERM_UPDATE))) {
+  if (!(await validateApiKey(req, PERM_MANAGE_KEYS))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const { id } = await params;
   const body = await req.json();
+
   try {
-    const archive = await prisma.archive.update({ where: { id: parseInt(id) }, data: body });
-    return NextResponse.json(archive);
+    const record = await prisma.apiKey.update({
+      where: { id: parseInt(id) },
+      data: {
+        ...(body.name !== undefined && { name: body.name }),
+        ...(body.permissions !== undefined && { permissions: body.permissions }),
+      },
+      select: { id: true, prefix: true, name: true, permissions: true },
+    });
+    return NextResponse.json(record);
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json({ error: msg }, { status: 404 });
@@ -41,12 +33,13 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!(await validateApiKey(req, PERM_DELETE))) {
+  if (!(await validateApiKey(req, PERM_MANAGE_KEYS))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const { id } = await params;
   try {
-    await prisma.archive.delete({ where: { id: parseInt(id) } });
+    await prisma.apiKey.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Unknown error";

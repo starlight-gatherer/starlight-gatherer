@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { validateApiKey } from "@/lib/api-auth";
+import { validateApiKey, PERM_UPDATE, PERM_DELETE } from "@/lib/api-auth";
 
 export async function GET(
   _req: NextRequest,
@@ -24,7 +24,7 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!validateApiKey(req)) {
+  if (!(await validateApiKey(req, PERM_UPDATE))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;
@@ -56,7 +56,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!validateApiKey(req)) {
+  if (!(await validateApiKey(req, PERM_DELETE))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { id } = await params;

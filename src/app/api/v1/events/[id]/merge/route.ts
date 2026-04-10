@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { validateApiKey } from "@/lib/api-auth";
+import { validateApiKey, PERM_UPDATE } from "@/lib/api-auth";
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!validateApiKey(req)) {
+  if (!(await validateApiKey(req, PERM_UPDATE))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

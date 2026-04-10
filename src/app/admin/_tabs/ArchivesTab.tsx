@@ -121,7 +121,13 @@ export function ArchivesTab() {
       editField: "eventId",
     },
     { header: "活动", accessor: "event.title", cellType: "truncated" },
-    { header: "年份", accessor: "year", cellType: "count" },
+    {
+      header: "年份",
+      accessor: "year",
+      cellType: "text",
+      edit: { type: "number" },
+      editField: "year"
+    },
   ];
 
   const displayed = archives.filter(

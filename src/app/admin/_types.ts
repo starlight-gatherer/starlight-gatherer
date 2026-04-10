@@ -38,4 +38,13 @@ export interface SeriesTypeRow {
   name: string;
 }
 
-export type TabKey = "archives" | "events" | "series" | "cover";
+export type TabKey = "archives" | "events" | "series" | "cover" | "keys";
+
+export interface ApiKeyRow {
+  id: number;
+  prefix: string;
+  name: string;
+  permissions: number;
+  lastUsedAt: string | null;
+  createdAt: string;
+}
