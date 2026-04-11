@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { API_KEY } from "../_constants";
 import { useStatus } from "./useStatus";
 
 export interface UseInlineEditOptions<T extends { id: number }> {
@@ -49,7 +48,6 @@ export function useInlineEdit<T extends { id: number }>({
         method,
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY,
         },
         body: JSON.stringify(editData),
       });

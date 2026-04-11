@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { ApiKeyRow } from "../_types";
-import { API_KEY, PERM_LABELS } from "../_constants";
+import { PERM_LABELS } from "../_constants";
 import { useStatus } from "../_hooks/useStatus";
 import { StatusBanner } from "../_components/StatusBanner";
 
@@ -15,9 +15,7 @@ export function KeysTab() {
   const { statusMsg, flash } = useStatus();
 
   const fetchKeys = useCallback(async () => {
-    const res = await fetch("/api/v1/api-keys", {
-      headers: { "x-api-key": API_KEY },
-    });
+    const res = await fetch("/api/v1/api-keys");
     if (res.ok) {
       setKeys(await res.json());
     }
@@ -33,7 +31,6 @@ export function KeysTab() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": API_KEY,
       },
       body: JSON.stringify({ name: newName.trim(), permissions: newPerms }),
     });
@@ -54,7 +51,6 @@ export function KeysTab() {
     if (!confirm(`Delete API key #${id}?`)) return;
     const res = await fetch(`/api/v1/api-keys/${id}`, {
       method: "DELETE",
-      headers: { "x-api-key": API_KEY },
     });
     if (!res.ok) {
       const err = await res.json();

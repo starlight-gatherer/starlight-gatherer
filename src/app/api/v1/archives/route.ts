@@ -7,11 +7,13 @@ export async function GET(req: NextRequest) {
   const year = searchParams.get("year");
   const isTranslated = searchParams.get("isTranslated");
   const eventId = searchParams.get("eventId");
+  const bv = searchParams.get("bv");
 
   const where: Record<string, unknown> = {};
   if (year) where.year = parseInt(year);
   if (isTranslated) where.isTranslated = parseInt(isTranslated);
   if (eventId) where.eventId = parseInt(eventId);
+  if (bv) where.bv = bv;
 
   const archives = await prisma.archive.findMany({
     where: Object.keys(where).length > 0 ? where : undefined,

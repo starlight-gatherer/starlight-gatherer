@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { Archive } from "../_types";
-import { TRANSLATED_LABELS, TRANSLATED_OPTIONS, API_KEY } from "../_constants";
+import { TRANSLATED_LABELS, TRANSLATED_OPTIONS } from "../_constants";
 import { useInlineEdit } from "../_hooks/useInlineEdit";
 import { DataTable } from "../_components/DataTable";
 import { SearchInput } from "../_components/SearchInput";
@@ -58,7 +58,6 @@ export function ArchivesTab() {
     try {
       const res = await fetch(`/api/v1/archives/${id}`, {
         method: "DELETE",
-        headers: { "x-api-key": API_KEY },
       });
       if (!res.ok) {
         const err = await res.json();

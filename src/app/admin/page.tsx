@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { ConfigProvider, App } from "antd";
 import { LoginForm, ProFormText } from "@ant-design/pro-components";
-import { LockOutlined } from "@ant-design/icons";
-import { ADMIN_PASSWORD, SESSION_KEY } from "./_constants";
+import { KeyOutlined } from "@ant-design/icons";
 import { TabBar } from "./_components/TabBar";
 import { ArchivesTab } from "./_tabs/ArchivesTab";
 import { EventsTab } from "./_tabs/EventsTab";
@@ -22,22 +21,26 @@ function AuthGate({ onAuth }: { onAuth: () => void }) {
         title="Starlight Gatherer"
         subTitle="管理后台"
         onFinish={async (values) => {
-          if (values.password === ADMIN_PASSWORD) {
-            sessionStorage.setItem(SESSION_KEY, "1");
-            onAuth();
-            return;
+          const res = await fetch("/api/v1/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ apiKey: values.apiKey }),
+          });
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "登录失败");
           }
-          throw new Error("密码错误");
+          onAuth();
         }}
       >
         <ProFormText.Password
-          name="password"
+          name="apiKey"
           fieldProps={{
             size: "large",
-            prefix: <LockOutlined />,
+            prefix: <KeyOutlined />,
           }}
-          placeholder="输入管理密码"
-          rules={[{ required: true, message: "请输入密码" }]}
+          placeholder="输入 API Key"
+          rules={[{ required: true, message: "请输入 API Key" }]}
         />
       </LoginForm>
     </div>
@@ -48,13 +51,28 @@ function AuthGate({ onAuth }: { onAuth: () => void }) {
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabKey>("archives");
 
   useEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY) === "1") {
-      setAuthenticated(true);
-    }
+    fetch("/api/v1/auth/session")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated) {
+          setAuthenticated(true);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-slate-400 text-sm">Loading...</p>
+      </div>
+    );
+  }
 
   if (!authenticated) {
     return (
@@ -72,7 +90,7 @@ export default function AdminPage() {
             <h1 className="text-3xl font-black">管理后台</h1>
             <button
               onClick={() => {
-                sessionStorage.removeItem(SESSION_KEY);
+                fetch("/api/v1/auth/logout", { method: "POST" });
                 setAuthenticated(false);
               }}
               className="text-sm text-slate-400 hover:text-red-500 transition-colors"

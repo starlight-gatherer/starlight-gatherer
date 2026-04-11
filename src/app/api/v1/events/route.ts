@@ -2,8 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { validateApiKey, PERM_CREATE } from "@/lib/api-auth";
 
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const title = searchParams.get("title");
+  const date = searchParams.get("date");
+
+  const where: Record<string, unknown> = {};
+  if (title) where.title = { contains: title, mode: "insensitive" };
+  if (date) {
+    const d = new Date(date);
+    const start = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const end = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+    where.date = { gte: start, lt: end };
+  }
+
   const events = await prisma.event.findMany({
+    where: Object.keys(where).length > 0 ? where : undefined,
     include: {
       _count: { select: { archives: true } },
       type: { select: { id: true, name: true } },

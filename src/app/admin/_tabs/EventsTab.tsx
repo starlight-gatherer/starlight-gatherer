@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { EventRow, SeriesRow, SeriesTypeRow } from "../_types";
-import { API_KEY } from "../_constants";
 import { useInlineEdit } from "../_hooks/useInlineEdit";
 import { DataTable } from "../_components/DataTable";
 import { SearchInput } from "../_components/SearchInput";
@@ -95,7 +94,6 @@ export function EventsTab() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY,
         },
         body: JSON.stringify({ sourceIds }),
       });
@@ -118,7 +116,6 @@ export function EventsTab() {
     try {
       const res = await fetch(`/api/v1/events/${id}`, {
         method: "DELETE",
-        headers: { "x-api-key": API_KEY },
       });
       if (!res.ok) {
         const err = await res.json();

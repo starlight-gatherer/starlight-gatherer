@@ -1,7 +1,3 @@
-export const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? "";
-export const SESSION_KEY = process.env.NEXT_PUBLIC_ADMIN_SESSION_KEY ?? "admin-auth";
-export const API_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY ?? "";
-
 export const TRANSLATED_LABELS: Record<number, string> = {
   [-1]: "未知",
   0: "生肉",

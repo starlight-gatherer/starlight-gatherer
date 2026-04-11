@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
+import { getSession } from "@/lib/session";
 
 // ── Permission bitmask constants ────────────────────────────────────────
 
@@ -17,9 +18,28 @@ export async function validateApiKey(
   req: NextRequest,
   requiredPerm: number
 ): Promise<boolean> {
-  const rawKey = req.headers.get("x-api-key");
+  let rawKey: string | undefined;
+
+  // ── Path 1: Check iron-session cookie ──────────────────────────────
+  try {
+    const session = await getSession();
+    if (session.apiKey) {
+      rawKey = session.apiKey;
+      // Sliding expiration: re-save to reset maxAge/TTL
+      await session.save();
+    }
+  } catch {
+    // Defensive: session reading may fail outside App Router context
+  }
+
+  // ── Path 2: Fall back to x-api-key header (backward compat) ───────
+  if (!rawKey) {
+    rawKey = req.headers.get("x-api-key") ?? undefined;
+  }
+
   if (!rawKey) return false;
 
+  // ── Validate key against DB ────────────────────────────────────────
   const record = await prisma.apiKey.findUnique({ where: { key: rawKey } });
   if (!record) return false;
   if ((record.permissions & requiredPerm) !== requiredPerm) return false;

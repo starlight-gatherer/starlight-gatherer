@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import type { SeriesRow } from "../_types";
-import { API_KEY } from "../_constants";
 import { useStatus } from "../_hooks/useStatus";
 import { StatusBanner } from "../_components/StatusBanner";
 
@@ -35,7 +34,6 @@ export function CoverTab() {
 
       const res = await fetch("/api/v1/upload-cover", {
         method: "POST",
-        headers: { "x-api-key": API_KEY },
         body: formData,
       });
 
