@@ -130,3 +130,25 @@
     @apply font-sans;
   }
 }
+
+/* EventCard Collapse overrides */
+.event-card-collapse {
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgb(241 245 249);
+  transition: all 0.3s;
+}
+.event-card-collapse:hover {
+  border-color: rgb(252 165 165);
+  box-shadow: 0 10px 15px -3px rgb(254 242 242);
+}
+.event-card-collapse .ant-collapse-header {
+  padding: 16px 20px !important;
+  align-items: center !important;
+}
+.event-card-collapse .ant-collapse-content-box {
+  padding: 0 12px 8px !important;
+}
+.event-card-collapse .ant-collapse-expand-icon {
+  color: rgb(203 213 225) !important;
+}
