@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import { resolve } from "path";
 config({ path: resolve(__dirname, "../.env.local") });
 
-import { PrismaClient } from "../src/generated/prisma/client.js";
+import { PrismaClient } from "@prisma/client.js";
 
 const PERM_ALL = 63; // all 6 permission bits
 
