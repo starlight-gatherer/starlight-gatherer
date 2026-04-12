@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://starlight-gatherer.top
+
+# Sitemaps
+Sitemap: https://starlight-gatherer.top/sitemap.xml
