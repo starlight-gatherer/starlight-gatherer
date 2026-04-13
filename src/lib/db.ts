@@ -9,15 +9,12 @@ function createPrismaClient() {
   const provider = process.env.DATABASE_PROVIDER;
   const url = process.env.DATABASE_URL!;
 
-  if (provider === "libsql") {
-    const adapter = new PrismaLibSql({
-      url,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
-    return new PrismaClient({ adapter });
-  }
+  const adapter = new PrismaLibSql({
+    url,
+    authToken: process.env.TURSO_AUTH_TOKEN,
+  });
 
-  return new PrismaClient();
+  return new PrismaClient({ adapter });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
