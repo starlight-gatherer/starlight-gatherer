@@ -7,7 +7,7 @@ export default async function TimelinePage() {
   noStore();
 
   const events = await prisma.event.findMany({
-    where: { isVirtual: false },
+    // where: { isVirtual: false },     // apply later
     include: {
       series: { select: { title: true } },
       archives: {
