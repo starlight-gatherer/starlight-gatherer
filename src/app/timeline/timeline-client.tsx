@@ -22,7 +22,7 @@ export function TimelineClient({ years, yearMap, events }: TimelineClientProps) 
               <li key={y}>
                 <a
                   href={`#year-${y}`}
-                  className="block text-sm font-bold text-slate-300 hover:text-red-500 transition-colors py-1"
+                  className="block text-sm font-bold text-slate-500 hover:text-red-500 transition-colors py-1"
                 >
                   {y}
                 </a>
@@ -43,7 +43,7 @@ export function TimelineClient({ years, yearMap, events }: TimelineClientProps) 
 
         {years.map((year) => (
           <div key={year} id={`year-${year}`} className="mb-16 scroll-mt-24">
-            <h2 className="text-6xl font-black text-slate-100 mb-8 select-none">{year}</h2>
+            <h2 className="text-6xl font-black text-slate-300 mb-8 select-none">{year}</h2>
             <MasonryGrid>
               {(yearMap[year] ?? []).map((eid) => {
                 const event = eventMap.get(eid);
